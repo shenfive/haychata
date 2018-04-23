@@ -1,16 +1,19 @@
 package idv.sjw.haychata;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class FourmAdapterItem {
     public String subject;
-    public String lastUpdateDate;
+    public Long lastUpdateDate;
     public String loastUpdateUserNickname;
+    public String key;
 
-    FourmAdapterItem(String subject,String lastUpdateDate,String loastUpdateUserNickname){
+    FourmAdapterItem(String subject,Long lastUpdateDate,String loastUpdateUserNickname,String key){
         this.subject = subject;
         this.lastUpdateDate = lastUpdateDate;
         this.loastUpdateUserNickname = loastUpdateUserNickname;
+        this.key = key;
     }
 
 }

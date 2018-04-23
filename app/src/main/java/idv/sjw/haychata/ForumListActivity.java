@@ -1,5 +1,6 @@
 package idv.sjw.haychata;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EventListener;
+import java.util.TimeZone;
 
 import static idv.sjw.haychata.R.layout.fourm_listitem;
 
@@ -41,37 +45,32 @@ public class ForumListActivity extends AppCompatActivity {
         rootRef = FirebaseDatabase.getInstance().getReference().child("forum");
 
         final ArrayList<FourmAdapterItem> listForumData = new ArrayList<FourmAdapterItem>();
-//        listForumData.add(new FourmAdapterItem("a", "b", "c"));
-
 
 
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                Log.d("data",dataSnapshot.toString());
                 for(DataSnapshot childDataSnapshot: dataSnapshot.getChildren()){
                     String subject = childDataSnapshot.child("subject").getValue().toString();
-                    Log.d("subject",subject);
-                    String date = childDataSnapshot.child("lastUpdate").getValue().toString();
-                    Log.d("date",date);
-                    String lastSpeaker = childDataSnapshot.child("lastSpeaker").getValue().toString();
-                    Log.d("lastSpeaker",lastSpeaker);
-                    listForumData.add(new FourmAdapterItem(subject,date,lastSpeaker));
+                    String lastupdate = childDataSnapshot.child("lastUpdate").getValue().toString();
+
+
+                    String loastUpdateUserNickname = childDataSnapshot.child("loastUpdateUserNickname").getValue().toString();
+
+                    String key = childDataSnapshot.getKey();
+                    listForumData.add(new FourmAdapterItem(subject,Long.parseLong(lastupdate),loastUpdateUserNickname,key));
                 }
                 myCustomAdapter = new MyCustomAdapter(listForumData);
                 fourmList.setAdapter(myCustomAdapter);
-
-
             }
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         };
-        rootRef.addListenerForSingleValueEvent(valueEventListener);
+        rootRef.child("subject").addListenerForSingleValueEvent(valueEventListener);
 
 
     }
@@ -103,26 +102,35 @@ public class ForumListActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-
-
             LayoutInflater mInflater = getLayoutInflater();
             View myView = mInflater.inflate(R.layout.fourm_listitem,null);
-////            View myView = layoutInflater.inflate(R.layout.fourm_listitem,null);
-//
-//            View myView = convertView;
-//
-//            myView = getLayoutInflater().inflate(R.layout.fourm_listitem,null);
-
             final FourmAdapterItem s = listForumDataAdapter.get(position);
-
-//
             TextView subject = (TextView)myView.findViewById(R.id.subject);
             subject.setText(s.subject);
             TextView date = (TextView)myView.findViewById(R.id.lastUpdate);
-            date.setText(s.lastUpdateDate);
-            TextView lastSpeaker = (TextView)myView.findViewById(R.id.lastSpeaker);
-            lastSpeaker.setText(s.subject);
+
+            Date lastUpdateddate = new Date(s.lastUpdateDate);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd HH:mm");
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
+            String dateString = simpleDateFormat.format(lastUpdateddate);
+
+            date.setText(dateString);
+            TextView lastSpeaker = (TextView)myView.findViewById(R.id.loastUpdateUserNickname);
+            lastSpeaker.setText(s.loastUpdateUserNickname);
+            myView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("lickID",s.key);
+                    Intent intent = new Intent();
+                    intent.setClass(ForumListActivity.this,DiscActivity.class);
+                    intent.putExtra("discKey",s.key);
+                    intent.putExtra("subject",s.subject);
+                    startActivity(intent);
+
+                }
+            });
+
+
             return myView;
         }
     }
