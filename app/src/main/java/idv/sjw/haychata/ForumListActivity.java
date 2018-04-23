@@ -56,10 +56,10 @@ public class ForumListActivity extends AppCompatActivity {
                     String lastupdate = childDataSnapshot.child("lastUpdate").getValue().toString();
 
 
-                    String loastUpdateUserNickname = childDataSnapshot.child("loastUpdateUserNickname").getValue().toString();
+                    String lastUpdateUserNickname = childDataSnapshot.child("lastUpdateUserNickname").getValue().toString();
 
                     String key = childDataSnapshot.getKey();
-                    listForumData.add(new FourmAdapterItem(subject,Long.parseLong(lastupdate),loastUpdateUserNickname,key));
+                    listForumData.add(new FourmAdapterItem(subject,Long.parseLong(lastupdate),lastUpdateUserNickname,key));
                 }
                 myCustomAdapter = new MyCustomAdapter(listForumData);
                 fourmList.setAdapter(myCustomAdapter);
@@ -115,8 +115,8 @@ public class ForumListActivity extends AppCompatActivity {
             String dateString = simpleDateFormat.format(lastUpdateddate);
 
             date.setText(dateString);
-            TextView lastSpeaker = (TextView)myView.findViewById(R.id.loastUpdateUserNickname);
-            lastSpeaker.setText(s.loastUpdateUserNickname);
+            TextView lastSpeaker = (TextView)myView.findViewById(R.id.lastUpdateUserNickname);
+            lastSpeaker.setText(s.lastUpdateUserNickname);
             myView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
