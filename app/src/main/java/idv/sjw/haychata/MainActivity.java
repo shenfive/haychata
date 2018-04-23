@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         String nicknameStrig = nickname.getText().toString();
         if (nicknameStrig.length() < 1) {
-            Toast.makeText(this,"錯誤:暱稱至少兩字",Toast.LENGTH_SHORT).show();
-            message.setText("錯誤:暱稱至少兩字");
+            Toast.makeText(this,"錯誤:暱稱至少兩字元",Toast.LENGTH_SHORT).show();
+            message.setText("錯誤:暱稱至少兩字元");
             return;
         }
 

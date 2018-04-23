@@ -121,7 +121,7 @@ public class DiscActivity extends AppCompatActivity {
             msg.put("timestemp",ServerValue.TIMESTAMP);
             newMsgRef.setValue(msg);
 
-            subjectRef.child("loastUpdateUserNickname").setValue(nickname.getText().toString());
+            subjectRef.child("lastUpdateUserNickname").setValue(nickname.getText().toString());
             subjectRef.child("lastUpdate").setValue(ServerValue.TIMESTAMP);
         }
     }
