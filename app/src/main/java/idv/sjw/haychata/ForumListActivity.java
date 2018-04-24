@@ -40,14 +40,20 @@ public class ForumListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forum_list);
 
         fourmList = (ListView)findViewById(R.id.fourmList);
-
-
         rootRef = FirebaseDatabase.getInstance().getReference().child("forum");
+        updateList();
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateList();
+    }
+
+    private void updateList(){
         final ArrayList<FourmAdapterItem> listForumData = new ArrayList<FourmAdapterItem>();
-
-
-
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -71,8 +77,6 @@ public class ForumListActivity extends AppCompatActivity {
             }
         };
         rootRef.child("subject").addListenerForSingleValueEvent(valueEventListener);
-
-
     }
 
     private  class  MyCustomAdapter extends BaseAdapter{
@@ -129,7 +133,6 @@ public class ForumListActivity extends AppCompatActivity {
 
                 }
             });
-
 
             return myView;
         }
